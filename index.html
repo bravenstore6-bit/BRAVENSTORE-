@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BRAVEN — Wear Your Style</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span>BRAVEN</span><small>WEAR YOUR STYLE</small></a>
+  <nav>
+    <a class="active" href="index.html">الرئيسية</a><a href="shop.html">المتجر</a>
+    <a href="shop.html?cat=men">رجالي</a><a href="shop.html?cat=women">حريمي</a>
+    <a href="#about">من نحن</a><a href="#contact">تواصل معنا</a>
+  </nav>
+  <div class="actions"><button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">☀️</button><button onclick="openSearch()">⌕</button><a href="account.html">♙</a><a href="cart.html">♡</a><a class="cart-link" href="cart.html">🛒 <b id="cartCount">0</b></a></div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">NEW COLLECTION 2026</span>
+    <h1>WEAR YOUR<br><strong>STYLE.</strong></h1>
+    <p>قطع مصممة علشان تعبر عنك — خامات مريحة، تصميمات عصرية، وستايل مختلف.</p>
+    <div class="hero-buttons"><a class="btn light" href="shop.html">تسوق الآن</a><a class="btn ghost" href="#categories">اكتشف المجموعة</a></div>
+  </div>
+  <div class="hero-art">
+    <div class="model-card model-one"><span>BRAVEN</span></div>
+    <div class="model-card model-two"><span>BRAVEN</span></div>
+    <div class="hero-stamp">MORE<br>THAN<br>JUST<br>STYLE.</div>
+  </div>
+</section>
+
+<section id="categories" class="section">
+  <div class="section-head"><div><span class="eyebrow dark">SHOP BY CATEGORY</span><h2>اكتشف الأقسام</h2></div><a href="shop.html">عرض الكل ←</a></div>
+  <div class="category-grid">
+    <a class="cat cat-men" href="shop.html?cat=men"><span>MEN</span><b>رجالي</b></a>
+    <a class="cat cat-women" href="shop.html?cat=women"><span>WOMEN</span><b>حريمي</b></a>
+    <a class="cat cat-kids" href="shop.html?cat=kids"><span>KIDS</span><b>أطفال</b></a>
+    <a class="cat cat-over" href="shop.html?cat=oversized"><span>OVERSIZED</span><b>أوفر سايز</b></a>
+    <a class="cat cat-hood" href="shop.html?cat=hoodies"><span>HOODIES</span><b>هوديز</b></a>
+  </div>
+</section>
+
+<section class="section dark-section">
+  <div class="section-head"><div><span class="eyebrow">BEST SELLERS</span><h2>الأكثر طلبًا</h2></div><a href="shop.html">عرض الكل ←</a></div>
+  <div id="homeProducts" class="product-grid"></div>
+</section>
+
+<section class="benefits section">
+  <div><i>◇</i><b>خامات عالية الجودة</b><span>اختيار خامات مريحة</span></div>
+  <div><i>♧</i><b>تصميمات عصرية</b><span>ستايل مختلف كل مرة</span></div>
+  <div><i>▱</i><b>شحن سريع</b><span>لكل محافظات مصر</span></div>
+  <div><i>♧</i><b>دعم العملاء</b><span>نحن هنا لمساعدتك</span></div>
+</section>
+
+
+<section class="instagram section">
+  <div class="section-head"><div><span class="eyebrow dark">FOLLOW US</span><h2>#BRAVEN</h2></div></div>
+  <div class="insta-grid"><div>BRAVEN</div><div>STYLE</div><div>2026</div><div>URBAN</div><div>WEAR</div></div>
+</section>
+
+<section class="newsletter"><div><span class="eyebrow">JOIN OUR NEWSLETTER</span><h2>خليك دايمًا على الموضة</h2><p>اشترك ليصلك كل جديد وعروضنا.</p></div><form onsubmit="subscribe(event)"><input required type="email" placeholder="البريد الإلكتروني"><button>اشترك</button></form></section>
+</main>
+
+<footer id="contact"><div><a class="brand" href="index.html"><span>BRAVEN</span><small>WEAR YOUR STYLE</small></a><p>متجر ملابس عصري يهتم بالتفاصيل والجودة.</p></div><div><h4>روابط سريعة</h4><a href="shop.html">المتجر</a><a href="account.html">حسابي</a><a href="cart.html">السلة</a></div><div><h4>خدمة العملاء</h4><a href="#">سياسة الخصوصية</a><a href="#">الشروط والأحكام</a><a href="#">الشحن والاستبدال</a></div><div><h4>تواصل معنا</h4>
+<a class="social-link" href="https://www.tiktok.com/@braven9631?_r=1&_t=ZS-99qKzGs6H9o" target="_blank" rel="noopener">TikTok</a>
+<a class="social-link" href="https://www.instagram.com/braven7117?stkn=MTlnc2VxcGY0OW10dA%3D%3D" target="_blank" rel="noopener">Instagram</a>
+<a class="social-link" href="mailto:braven.store6@gmail.com">braven.store6@gmail.com</a>
+<a class="social-link" id="whatsappLink" href="https://wa.me/2010016248519" target="_blank" rel="noopener">واتساب: <span id="footerPhone">01001624851</span></a>
+</div></footer>
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+<script>
+(function(){
+  function updateWhatsApp(){
+    try {
+      const settings = JSON.parse(localStorage.getItem("braven_settings") || "{}");
+      const raw = String(settings.phone || "").trim();
+      const digits = raw.replace(/\D/g, "");
+      if (!digits) return;
+      let wa = digits;
+      if (wa.startsWith("0")) wa = "20" + wa.slice(1);
+      else if (wa.startsWith("20")) wa = wa;
+      const link = document.getElementById("whatsappLink");
+      const label = document.getElementById("footerPhone");
+      if (link) link.href = "https://wa.me/" + wa;
+      if (label) label.textContent = raw;
+    } catch(e) {}
+  }
+  updateWhatsApp();
+  window.addEventListener("storage", updateWhatsApp);
+  window.addEventListener("pageshow", updateWhatsApp);
+})();
+renderHomeProducts();
+</script>
+</body></html>
