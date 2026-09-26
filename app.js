@@ -26,7 +26,7 @@ function getCart(){return JSON.parse(localStorage.getItem(CART)||'[]')}
 function setCart(x){localStorage.setItem(CART,JSON.stringify(x));updateCartCount()}
 function money(n){return Number(n).toLocaleString('en-US')+' ج.م'}
 function imgStyle(p){return p.image?`style="background-image:url('${p.image}');background-size:cover;background-position:center"`:''}
-function card(p){return `<article class="product-card"><div class="product-image" ${imgStyle(p)}>${p.old&&p.old>p.price?'<span class="sale">خصم</span>':''}${p.image?'':'<span>BRAVEN</span>'}</div><div class="product-body"><h3>${p.name}</h3><div class="rating">★★★★★ <small>${p.rating||5}</small></div><div><b class="price">${money(p.price)}</b>${p.old?`<span class="old">${money(p.old)}</span>`:''}</div><button class="add-btn" onclick="addToCart('${p.id}')">أضف للسلة</button></div></article>`}
+function card(p){return `<article class="product-card" onclick="openProduct('${p.id}')"><div class="product-image" ${imgStyle(p)}>${p.old&&p.old>p.price?'<span class="sale">خصم</span>':''}${p.image?'':'<span>BRAVEN</span>'}</div><div class="product-body"><h3>${p.name}</h3><div class="rating">★★★★★ <small>${p.rating||5}</small></div><div><b class="price">${money(p.price)}</b>${p.old?`<span class="old">${money(p.old)}</span>`:''}</div><button class="add-btn" onclick="event.stopPropagation();addToCart('${p.id}')">أضف للسلة</button></div></article>`}
 function renderHomeProducts(){updateCartCount();let el=document.getElementById('homeProducts');if(el)el.innerHTML=getProducts().slice(0,4).map(card).join('')}
 function initShop(){updateCartCount();const u=new URLSearchParams(location.search);document.getElementById('categorySelect').value=u.get('cat')||'';renderShop()}
 function renderShop(){let q=(document.getElementById('searchInput').value||'').toLowerCase(),c=document.getElementById('categorySelect').value,s=document.getElementById('sortSelect').value;let a=getProducts().filter(p=>(!q||p.name.toLowerCase().includes(q))&&(!c||p.cat===c));if(s==='low')a.sort((x,y)=>x.price-y.price);if(s==='high')a.sort((x,y)=>y.price-x.price);document.getElementById('shopProducts').innerHTML=a.map(card).join('')||'<p>لا توجد منتجات مطابقة.</p>'}
@@ -84,6 +84,30 @@ function renderCheckout(){
     e.target.innerHTML='<div class="form-card"><h2>تم استلام طلبك ✓</h2><p>رقم الطلب: '+order.id+'</p><p>الحالة: قيد الانتظار</p><a class="btn dark-btn" href="index.html">العودة للرئيسية</a></div>';
   }
 }
+
+const WISHLIST='braven_wishlist', REVIEWS='braven_reviews';
+function getWishlist(){return JSON.parse(localStorage.getItem(WISHLIST)||'[]')}
+function toggleWishlist(id){let w=getWishlist();if(w.includes(id))w=w.filter(x=>x!==id);else w.push(id);localStorage.setItem(WISHLIST,JSON.stringify(w));renderProduct()}
+function getProductImages(p){return Array.isArray(p.images)&&p.images.length?p.images:(p.image?[p.image]:[])}
+function openProduct(id){location.href='product.html?id='+encodeURIComponent(id)}
+function getReviews(){return JSON.parse(localStorage.getItem(REVIEWS)||'[]')}
+function renderProduct(){
+  const el=document.getElementById('productDetail'); if(!el)return;
+  const id=new URLSearchParams(location.search).get('id'), p=getProducts().find(x=>x.id===id);
+  if(!p){el.innerHTML='<div class="form-card"><h2>المنتج غير موجود</h2><a class="btn dark-btn" href="shop.html">العودة للمتجر</a></div>';return}
+  const imgs=getProductImages(p), reviews=getReviews().filter(r=>r.productId===p.id), wished=getWishlist().includes(p.id);
+  const related=getProducts().filter(x=>x.id!==p.id&&x.cat===p.cat).slice(0,4);
+  const avg=reviews.length?(reviews.reduce((s,r)=>s+Number(r.rating),0)/reviews.length).toFixed(1):Number(p.rating||5).toFixed(1);
+  el.innerHTML=`<div class="product-detail-grid"><div><div id="mainProductImage" class="detail-main-image" ${imgs[0]?imgStyle({image:imgs[0]}):''}>${imgs[0]?'':'BRAVEN'}</div><div class="detail-gallery">${imgs.map((im,i)=>`<button onclick="document.getElementById('mainProductImage').style.backgroundImage='url(\'${im}\')'"><img src="${im}" alt="${p.name} ${i+1}"></button>`).join('')}</div></div><div class="detail-info"><span class="eyebrow dark">${p.newProduct?'NEW ':''}${p.featured?'FEATURED ':''}${p.cat}</span><h1>${p.name}</h1><div class="rating">★★★★★ <small>${avg}</small></div><div><b class="detail-price">${money(p.price)}</b>${p.old&&p.old>p.price?`<span class="old">${money(p.old)}</span>`:''}</div><p class="stock-badge ${Number(p.stock)>0?'in':'out'}">${Number(p.stock)>0?'متوفر — '+p.stock+' قطعة':'غير متوفر'}</p><p class="product-description">${p.description||'منتج من BRAVEN بتصميم عصري وخامة مريحة للاستخدام اليومي.'}</p>${p.sizes?.length?`<p><b>المقاسات:</b> ${p.sizes.join('، ')}</p>`:''}${p.colors?.length?`<p><b>الألوان:</b> ${p.colors.join('، ')}</p>`:''}<p><b>SKU:</b> ${p.sku||'—'}</p><div class="detail-actions"><button class="btn dark-btn" onclick="addToCart('${p.id}')" ${Number(p.stock)<=0?'disabled':''}>أضف للسلة</button><button class="btn outline" onclick="toggleWishlist('${p.id}')">${wished?'♥ في المفضلة':'♡ أضف للمفضلة'}</button></div></div></div><section class="reviews-block"><h2>تقييمات العملاء</h2>${reviews.length?reviews.map(r=>`<article><b>${r.name}</b><span> — ${'★'.repeat(Number(r.rating))}${'☆'.repeat(5-Number(r.rating))}</span><p>${r.text}</p></article>`).join(''):'<p>لا توجد مراجعات بعد.</p>'}<form class="review-form" onsubmit="submitReview(event,'${p.id}')"><input name="name" required placeholder="اسمك"><select name="rating"><option value="5">5 نجوم</option><option value="4">4 نجوم</option><option value="3">3 نجوم</option><option value="2">نجمتان</option><option value="1">نجمة</option></select><textarea name="text" required placeholder="اكتب تقييمك"></textarea><button class="btn dark-btn">إرسال التقييم</button></form></section>${related.length?`<section class="section related-section"><div class="section-head"><h2>منتجات مشابهة</h2></div><div class="product-grid">${related.map(card).join('')}</div></section>`:''}`;
+}
+function submitReview(e,id){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));let r=getReviews();r.unshift({id:'REV-'+Date.now(),productId:id,name:d.name,rating:Number(d.rating),text:d.text,date:new Date().toLocaleString('ar-EG')});localStorage.setItem(REVIEWS,JSON.stringify(r));toast('تم إرسال التقييم ✓');e.target.reset();renderProduct()}
+function renderAdminReviews(){
+ const el=document.getElementById('adminReviews');if(!el)return;
+ const ps=getProducts(),rs=getReviews();
+ el.innerHTML=rs.length?rs.map(r=>{const p=ps.find(x=>x.id===r.productId);return `<div class="review-admin-row"><div><b>${r.name}</b> — ${p?.name||'منتج محذوف'} — ${'★'.repeat(Number(r.rating))}</div><p>${r.text}</p><small>${r.date||''}</small><button onclick="deleteReview('${r.id}')">حذف</button></div>`}).join(''):'<p>لا توجد مراجعات.</p>';
+}
+function deleteReview(id){localStorage.setItem(REVIEWS,JSON.stringify(getReviews().filter(r=>r.id!==id)));renderAdminReviews();toast('تم حذف المراجعة')}
+
 function saveAccount(){localStorage.setItem(ACCOUNT,JSON.stringify({name:document.getElementById('accountName').value,phone:document.getElementById('accountPhone').value}));document.getElementById('accountMsg').textContent='تم حفظ البيانات ✓'}
 function loadAccount(){let a=JSON.parse(localStorage.getItem(ACCOUNT)||'{}');if(a.name)document.getElementById('accountName').value=a.name;if(a.phone)document.getElementById('accountPhone').value=a.phone}
 function subscribe(e){e.preventDefault();toast('تم الاشتراك بنجاح ✓');e.target.reset()}
@@ -99,9 +123,9 @@ function renderAdmin(){
   document.getElementById('statSales').textContent=orders.filter(o=>o.status==='مكتمل').reduce((s,o)=>s+Number(o.total||0),0).toLocaleString();
   document.getElementById('statProducts').textContent=ps.length;
   document.getElementById('statStock').textContent=ps.reduce((s,p)=>s+Number(p.stock||0),0);
-  document.getElementById('adminProducts').innerHTML=ps.map(p=>`<div class="admin-product"><div class="admin-thumb" ${imgStyle(p)}>BRAVEN</div><div><b>${p.name}</b><small>${money(p.price)} · مخزون ${p.stock}</small></div><div class="admin-actions"><button onclick="editProduct('${p.id}')">تعديل</button><button onclick="deleteProduct('${p.id}')">حذف</button></div></div>`).join('');
+  document.getElementById('adminProducts').innerHTML=ps.map(p=>`<div class="admin-product"><div class="admin-thumb" ${imgStyle(p)}>BRAVEN</div><div><b>${p.name}</b><small>${money(p.price)} · مخزون ${p.stock}${Number(p.stock)<=Number(p.lowStock??3)?' · ⚠️ مخزون منخفض':''}</small></div><div class="admin-actions"><button onclick="editProduct('${p.id}')">تعديل</button><button onclick="deleteProduct('${p.id}')">حذف</button></div></div>`).join('');
   document.getElementById('adminOrders').innerHTML=orders.length?orders.map(o=>`<div class="order"><div class="order-head"><span>${o.id}</span><span>${money(o.total)}</span></div><small>${o.date} — ${o.customer?.name||''} — ${o.customer?.phone||''}</small><p>${(o.items||[]).map(i=>{let p=ps.find(x=>x.id===i.id);return p?p.name+' × '+i.qty:''}).join('، ')}</p><div class="order-status"><label>حالة الطلب<select onchange="updateOrderStatus('${o.id}',this.value)"><option ${o.status==='قيد الانتظار'?'selected':''}>قيد الانتظار</option><option ${o.status==='قيد التجهيز'?'selected':''}>قيد التجهيز</option><option ${o.status==='مكتمل'?'selected':''}>مكتمل</option><option ${o.status==='ملغي'?'selected':''}>ملغي</option></select></label></div></div>`).join(''):'<p>لا توجد طلبات حتى الآن.</p>';
-  renderRevenueDashboard(orders,ps);
+  renderRevenueDashboard(orders,ps);renderAdminReviews();
   let settings=JSON.parse(localStorage.getItem(SETTINGS)||'{"name":"BRAVEN","phone":"01000000000"}');
   document.getElementById('storeName').value=settings.name;document.getElementById('storePhone').value=settings.phone;
 }
@@ -131,8 +155,19 @@ function updateOrderStatus(id,status){
   }
   o.status=status;o.updatedAt=Date.now();localStorage.setItem(ORDERS,JSON.stringify(orders));toast('تم تحديث حالة الطلب ✓');renderAdmin();
 }
-function saveProduct(e){e.preventDefault();let ps=getProducts(),id=document.getElementById('editId').value||'p'+Date.now(),old=ps.find(p=>p.id===id),file=document.getElementById('pImage').files[0],save=(image)=>{let p={id,name:document.getElementById('pName').value,cat:document.getElementById('pCat').value,price:Number(document.getElementById('pPrice').value),old:Number(document.getElementById('pOld').value)||0,stock:Number(document.getElementById('pStock').value),rating:Number(document.getElementById('pRating').value)||5,image:image||old?.image||''};let i=ps.findIndex(x=>x.id===id);if(i>-1)ps[i]=p;else ps.unshift(p);setProducts(ps);resetProductForm();renderAdmin();toast('تم حفظ المنتج ✓')};if(file){let r=new FileReader();r.onload=()=>save(r.result);r.readAsDataURL(file)}else save(document.getElementById('pImageUrl').value||old?.image||'')}
-function editProduct(id){let p=getProducts().find(x=>x.id===id);if(!p)return;document.getElementById('editId').value=p.id;document.getElementById('pName').value=p.name;document.getElementById('pCat').value=p.cat;document.getElementById('pPrice').value=p.price;document.getElementById('pOld').value=p.old||'';document.getElementById('pStock').value=p.stock;document.getElementById('pRating').value=p.rating||5;document.getElementById('pImageUrl').value=p.image?.startsWith('http')?p.image:'';document.getElementById('productFormTitle').textContent='تعديل المنتج';scrollTo({top:0,behavior:'smooth'})}
+function saveProduct(e){
+ e.preventDefault();
+ let ps=getProducts(),id=document.getElementById('editId').value||'p'+Date.now(),old=ps.find(p=>p.id===id);
+ const files=[...document.getElementById('pImages').files], oldImages=old?.images||getProductImages(old||{});
+ const finish=(uploaded)=>{
+  const p={id,name:document.getElementById('pName').value.trim(),cat:document.getElementById('pCat').value,price:Number(document.getElementById('pPrice').value),old:Number(document.getElementById('pOld').value)||0,stock:Number(document.getElementById('pStock').value),rating:Number(document.getElementById('pRating').value)||5,description:document.getElementById('pDescription').value.trim(),sizes:document.getElementById('pSizes').value.split(',').map(x=>x.trim()).filter(Boolean),colors:document.getElementById('pColors').value.split(',').map(x=>x.trim()).filter(Boolean),sku:document.getElementById('pSku').value.trim(),featured:document.getElementById('pFeatured').checked,newProduct:document.getElementById('pNew').checked,lowStock:Number(document.getElementById('pLowStock').value)||3,images:uploaded.length?uploaded:(oldImages||[])};
+  p.image=p.images[0]||document.getElementById('pImageUrl').value.trim()||old?.image||'';
+  let i=ps.findIndex(x=>x.id===id);if(i>-1)ps[i]=p;else ps.unshift(p);setProducts(ps);resetProductForm();renderAdmin();toast('تم حفظ المنتج ✓');
+ };
+ if(files.length){let out=[],i=0;const next=()=>{if(i>=files.length){finish(out);return}const r=new FileReader();r.onload=()=>{out.push(r.result);i++;next()};r.readAsDataURL(files[i])};next()}else{const url=document.getElementById('pImageUrl').value.trim();finish(url?[url]:oldImages)}
+}
+function editProduct(id){let p=getProducts().find(x=>x.id===id);if(!p)return;document.getElementById('editId').value=p.id;document.getElementById('pName').value=p.name;document.getElementById('pCat').value=p.cat;document.getElementById('pPrice').value=p.price;document.getElementById('pOld').value=p.old||'';document.getElementById('pStock').value=p.stock;document.getElementById('pRating').value=p.rating||5;document.getElementById('pDescription').value=p.description||'';document.getElementById('pSizes').value=(p.sizes||[]).join(', ');document.getElementById('pColors').value=(p.colors||[]).join(', ');document.getElementById('pSku').value=p.sku||'';document.getElementById('pFeatured').checked=!!p.featured;document.getElementById('pNew').checked=!!p.newProduct;document.getElementById('pLowStock').value=p.lowStock??3;document.getElementById('pImageUrl').value=p.image?.startsWith('http')?p.image:'';scrollTo({top:0,behavior:'smooth'});document.getElementById('productFormTitle').textContent='تعديل المنتج')}
 function resetProductForm(){document.getElementById('productForm').reset();document.getElementById('editId').value='';document.getElementById('productFormTitle').textContent='إضافة منتج'}
+
 function deleteProduct(id){if(!confirm('حذف المنتج؟'))return;setProducts(getProducts().filter(p=>p.id!==id));renderAdmin()}
 function saveSettings(){localStorage.setItem(SETTINGS,JSON.stringify({name:document.getElementById('storeName').value,phone:document.getElementById('storePhone').value}));toast('تم حفظ الإعدادات')}
