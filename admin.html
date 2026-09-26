@@ -1,7 +1,7 @@
 <!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>لوحة الإدارة — BRAVEN</title><link rel="stylesheet" href="styles.css"></head><body class="admin-body">
 <header class="admin-top"><a href="index.html">BRAVEN</a><span>ADMIN PANEL</span><div class="admin-top-actions"><button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">☀️ الوضع</button><a href="index.html">عرض المتجر ↗</a></div></header>
 <main class="admin-wrap">
-<section id="adminLogin" class="admin-login"><div class="admin-login-box"><div class="admin-logo">BRAVEN<span>ADMIN</span></div><h1>الدخول إلى لوحة الإدارة</h1><input id="adminEmail" placeholder="البريد الإلكتروني"><input id="adminPass" type="password" placeholder="كلمة المرور"><button onclick="adminLogin()">دخول</button><small>نسخة تجريبية: الدخول المحلي هو admin@braven.com / 123456</small></div></section>
+<section id="adminLogin" class="admin-login"><div class="admin-login-box"><div class="admin-logo">BRAVEN<span>ADMIN</span></div><h1>الدخول إلى لوحة الإدارة</h1><input id="adminEmail" placeholder="البريد الإلكتروني"><input id="adminPass" type="password" placeholder="كلمة المرور"><button onclick="bravenSafeAdminLogin()">دخول</button><small>نسخة تجريبية: الدخول المحلي هو admin@braven.com / 123456</small></div></section>
 <section id="dashboard" class="hidden">
 <div class="admin-head"><div><span class="eyebrow dark">CONTROL CENTER</span><h1>لوحة الإدارة</h1><p>إدارة المنتجات والمخزون والطلبات والإعدادات.</p></div><button class="btn dark-btn" onclick="adminLogout()">تسجيل خروج</button></div>
 <div class="stats"><div><b id="statOrders">0</b><span>الطلبات</span></div><div><b id="statSales">0</b><span>المبيعات ج.م</span></div><div><b id="statProducts">0</b><span>المنتجات</span></div><div><b id="statStock">0</b><span>المخزون</span></div></div>
@@ -9,4 +9,4 @@
 <section class="admin-card"><h2>المنتجات والمخزون</h2><div id="adminProducts"></div></section></div>
 <section class="admin-card" id="revenueDashboard"><h2>الإيرادات والإحصائيات</h2><p>جاري تحميل الإحصائيات...</p></section><section class="admin-card"><h2>الطلبات</h2><div id="adminOrders"></div></section>
 <section class="admin-card"><h2>إدارة التقييمات والمراجعات</h2><div id="adminReviews"></div></section><section class="admin-card settings"><h2>إعدادات المتجر</h2><div class="two"><label>اسم المتجر<input id="storeName"></label><label>رقم واتساب<input id="storePhone"></label></div><button class="btn dark-btn" onclick="saveSettings()">حفظ الإعدادات</button></section>
-</section></main><div id="toast" class="toast"></div><script src="app.js"></script><script src="repair.js"></script><script>initAdmin()</script></body></html>
+</section></main><div id="toast" class="toast"></div><script src="app.js"></script><script src="recovery.js"></script><script>initAdmin()</script></body></html>
