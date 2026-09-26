@@ -1,0 +1,13 @@
+/* BRAVEN final theme layer: loaded after styles.css so the theme variables win over legacy base rules. */
+body{background:var(--page-bg)!important;color:var(--page-text)!important}
+body.theme-dark .hero{background:var(--invert-bg);color:var(--invert-text)}
+body.theme-dark .hero-art{background:linear-gradient(135deg,#222628,#050606)}
+body.theme-dark .cat{color:#fff}
+body.theme-dark .instagram{background:var(--page-bg);color:var(--page-text)}
+body.theme-dark .newsletter{background:var(--invert-bg);color:var(--invert-text)}
+body.theme-dark .newsletter input{background:var(--field-bg);color:var(--field-text);border:1px solid var(--border)}
+body.theme-dark .cat,.theme-dark .insta-grid div{border-color:var(--border)}
+body.theme-dark .footer,body.theme-dark footer{background:#000;color:#aaa}
+body.theme-dark .footer h4,body.theme-dark footer h4{color:#fff}
+body.theme-dark .eyebrow.dark{color:#b7b7b7}
+.home-error{padding:24px;text-align:center;color:var(--muted-text)}
