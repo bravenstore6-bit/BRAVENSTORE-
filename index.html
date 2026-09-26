@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BRAVEN — Wear Your Style</title>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260926-2">
 </head>
 <body>
 <header class="topbar">
@@ -25,6 +25,16 @@
 </main>
 <footer id="contact"><div><a class="brand" href="index.html"><span>BRAVEN</span><small>WEAR YOUR STYLE</small></a><p>متجر ملابس عصري يهتم بالتفاصيل والجودة.</p></div><div><h4>روابط سريعة</h4><a href="shop.html">المتجر</a><a href="account.html">حسابي</a><a href="cart.html">السلة</a></div><div><h4>خدمة العملاء</h4><a href="#">سياسة الخصوصية</a><a href="#">الشروط والأحكام</a><a href="#">الشحن والاستبدال</a></div><div><h4>تواصل معنا</h4><a class="social-link" href="https://www.tiktok.com/@braven9631?_r=1&_t=ZS-99qKzGs6H9o" target="_blank" rel="noopener">TikTok</a><a class="social-link" href="https://www.instagram.com/braven7117?stkn=MTlnc2VxcGY0OW10dA%3D%3D" target="_blank" rel="noopener">Instagram</a><a class="social-link" href="mailto:braven.store6@gmail.com">braven.store6@gmail.com</a><a class="social-link" id="whatsappLink" href="https://wa.me/2010016248519" target="_blank" rel="noopener">واتساب: <span id="footerPhone">01001624851</span></a></div></footer>
 <div id="toast" class="toast"></div>
-<script src="recovery.js"></script><script src="app.js"></script><script src="store-home-fix.js"></script>
-<script>(function(){function updateWhatsApp(){try{const settings=JSON.parse(localStorage.getItem("braven_settings")||"{}");const raw=String(settings.phone||"").trim();const digits=raw.replace(/\D/g,"");if(!digits)return;let wa=digits;if(wa.startsWith("0"))wa="20"+wa.slice(1);const link=document.getElementById("whatsappLink"),label=document.getElementById("footerPhone");if(link)link.href="https://wa.me/"+wa;if(label)label.textContent=raw}catch(e){}}updateWhatsApp();window.addEventListener("storage",updateWhatsApp);window.addEventListener("pageshow",updateWhatsApp)})();renderHomeProducts();</script>
-</body></html>
+<script src="recovery.js?v=20260926-2"></script>
+<script src="app.js?v=20260926-2"></script>
+<script src="store-home-fix.js?v=20260926-2"></script>
+<script>
+(function(){
+  function updateWhatsApp(){try{const settings=JSON.parse(localStorage.getItem('braven_settings')||'{}');const raw=String(settings.phone||'').trim();const digits=raw.replace(/\D/g,'');if(!digits)return;let wa=digits;if(wa.startsWith('0'))wa='20'+wa.slice(1);const link=document.getElementById('whatsappLink'),label=document.getElementById('footerPhone');if(link)link.href='https://wa.me/'+wa;if(label)label.textContent=raw}catch(e){}}
+  updateWhatsApp();
+  window.addEventListener('storage',updateWhatsApp);
+  window.addEventListener('pageshow',updateWhatsApp);
+})();
+</script>
+</body>
+</html>
