@@ -1,13 +1,38 @@
-/* BRAVEN final theme layer: loaded after styles.css so the theme variables win over legacy base rules. */
-body{background:var(--page-bg)!important;color:var(--page-text)!important}
-body.theme-dark .hero{background:var(--invert-bg);color:var(--invert-text)}
+/* BRAVEN theme stability layer — visual styles only, no JS/state changes. */
+body{transition:background-color .25s ease,color .25s ease}
+body:not(.theme-dark){background:#f4f4f1;color:#111}
+body.theme-dark{background:#080909;color:#fff}
+
+body:not(.theme-dark) .topbar,body:not(.theme-dark) .admin-top{background:#fff;color:#111;border-color:#ddd}
+body.theme-dark .topbar,body.theme-dark .admin-top{background:#000;color:#fff;border-color:#252525}
+body:not(.theme-dark) .topbar nav a,body:not(.theme-dark) .actions button,body:not(.theme-dark) .actions a{color:#111}
+body.theme-dark .topbar nav a,body.theme-dark .actions button,body.theme-dark .actions a{color:#fff}
+
+body:not(.theme-dark) .hero{background:#fff;color:#111}
+body:not(.theme-dark) .hero p{color:#555}
+body.theme-dark .hero{background:#0b0d0e;color:#fff}
 body.theme-dark .hero-art{background:linear-gradient(135deg,#222628,#050606)}
-body.theme-dark .cat{color:#fff}
-body.theme-dark .instagram{background:var(--page-bg);color:var(--page-text)}
-body.theme-dark .newsletter{background:var(--invert-bg);color:var(--invert-text)}
-body.theme-dark .newsletter input{background:var(--field-bg);color:var(--field-text);border:1px solid var(--border)}
-body.theme-dark .cat,.theme-dark .insta-grid div{border-color:var(--border)}
-body.theme-dark .footer,body.theme-dark footer{background:#000;color:#aaa}
-body.theme-dark .footer h4,body.theme-dark footer h4{color:#fff}
-body.theme-dark .eyebrow.dark{color:#b7b7b7}
-.home-error{padding:24px;text-align:center;color:var(--muted-text)}
+
+body.theme-dark .section:not(.dark-section),body.theme-dark .benefits,body.theme-dark .instagram{background:#080909;color:#fff}
+body.theme-dark .dark-section,body.theme-dark .reviews{background:#000;color:#fff}
+body.theme-dark .product-card,body.theme-dark .cart-row,body.theme-dark .cart-total,body.theme-dark .form-card,body.theme-dark .account-card,body.theme-dark .admin-card,body.theme-dark .stats>div,body.theme-dark .admin-login-box{background:#111313;color:#fff;border-color:#303333}
+body.theme-dark .product-card h3,body.theme-dark .section-head h2,body.theme-dark .admin-card h2,body.theme-dark .admin-head h1,body.theme-dark .admin-logo,body.theme-dark label{color:#fff}
+body.theme-dark .shop-tools input,body.theme-dark .shop-tools select,body.theme-dark .account-card input,body.theme-dark .checkout-form input,body.theme-dark .checkout-form select,body.theme-dark .checkout-form textarea,body.theme-dark .admin-card input,body.theme-dark .admin-card select,body.theme-dark .admin-login-box input{background:#151717;color:#fff;border-color:#3a3a3a}
+body.theme-dark .outline{color:#fff;border-color:#555;background:transparent}
+body.theme-dark .dark-btn,body.theme-dark .add-btn,body.theme-dark .sale{background:#fff;color:#000}
+body.theme-dark footer{background:#000;color:#aaa}
+body.theme-dark footer h4{color:#fff}
+body.theme-dark .newsletter{background:#000;color:#fff}
+body.theme-dark .newsletter input{background:#151717;color:#fff}
+
+body:not(.theme-dark) .dark-section{background:#fff;color:#111;border-top:1px solid #eee;border-bottom:1px solid #eee}
+body:not(.theme-dark) .newsletter{background:#f2f2ef;color:#111}
+body:not(.theme-dark) footer{background:#fff;color:#666;border-top:1px solid #ddd}
+body:not(.theme-dark) footer h4{color:#111}
+body:not(.theme-dark) .admin-body{background:#f4f4f1}
+body.theme-dark .admin-body{background:#080909}
+
+.theme-toggle{background:transparent!important;color:inherit!important;border:1px solid currentColor!important;border-radius:999px;padding:6px 10px!important;font-size:12px!important;line-height:1;transition:all .2s ease}
+.theme-toggle:hover{transform:translateY(-1px);opacity:.8}
+.home-error{padding:24px;text-align:center;color:#777}
+@media(max-width:520px){.theme-toggle{padding:6px 8px!important}}
