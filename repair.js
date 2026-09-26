@@ -23,4 +23,19 @@ try{
   document.head.appendChild(style);
   if(typeof applyTheme==='function')applyTheme();
 }catch(e){}
+try{
+  window.adminLogin=function(){
+    const email=document.getElementById('adminEmail');
+    const pass=document.getElementById('adminPass');
+    const e=String(email?.value||'').trim().toLowerCase();
+    const p=String(pass?.value||'').trim();
+    if(e==='admin@braven.com'&&p==='123456'){
+      sessionStorage.setItem('braven_admin','1');
+      if(typeof showDashboard==='function')showDashboard();
+      return true;
+    }
+    if(typeof toast==='function')toast('بيانات الدخول غير صحيحة');
+    return false;
+  };
+}catch(e){}
 })();
