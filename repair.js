@@ -1,0 +1,1 @@
+(function(){'use strict';const keys=['braven_new_products','braven_new_cart','braven_new_orders'];for(const k of keys){try{const v=localStorage.getItem(k);if(v!==null)JSON.parse(v)}catch(e){localStorage.removeItem(k)}}})();
